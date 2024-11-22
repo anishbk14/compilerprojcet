@@ -1,0 +1,90 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online C Compiler</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Online C Compiler</h1>
+    <textarea id="codeEditor" placeholder="Write your C code here..." rows="15"></textarea>
+    <button id="runButton">Run Code</button>
+    <pre id="output"></pre>
+  </div>
+  <script>
+    document.getElementById('runButton').addEventListener('click', () => {
+  const code = document.getElementById('codeEditor').value;
+
+  // Send the code to the server
+  fetch('/compile', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ code }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      document.getElementById('output').textContent = data.output;
+    })
+    .catch((error) => {
+      document.getElementById('output').textContent = 'Error: ' + error.message;
+    });
+});
+
+  </script>
+
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f9;
+}
+
+.container {
+  width: 80%;
+  max-width: 800px;
+}
+
+textarea {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 15px;
+  border: none;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+pre {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #333;
+  color: #f4f4f4;
+  font-size: 16px;
+  font-family: 'Courier New', Courier, monospace;
+  border-radius: 5px;
+}
+
+  </style>
+</body>
+</html>
